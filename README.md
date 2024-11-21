@@ -109,7 +109,7 @@ Effectue une réservation pour cet employé.
 
 Vérifie que la salle ne peut plus être réservée pour la même plage horaire.
 
-##### 4. Résultat attendu
+### 4. Résultat attendu
    Fonctionnalités implémentées :
 
    Les employés peuvent être créés, les salles peuvent être ajoutées.
@@ -125,7 +125,7 @@ Tests d'intégration : Vérification des interactions entre le service et les r�
   
 Tests fonctionnels : Vérification de bout en bout via des appels à l'API.
 
-##### 5. Plan détaillé des tests
+### 5. Plan détaillé des tests
    Tests d'intégration (Repository)
 
    EmployeeRepositoryTest :
