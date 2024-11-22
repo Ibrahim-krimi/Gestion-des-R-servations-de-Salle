@@ -40,7 +40,7 @@ Tester le repository de chaque entité avec une base de données H2 :
 
 Vérifier que EmployeeRepository peut sauvegarder et récupérer un employé par son email.
    
-Vérifier que RoomRepository peut récupérer une salle par sa localisation.
+Vérifier que RoomRepository peut récupérer une Liste de salle par sa capacite.
    
 Vérifier que ReservationRepository peut sauvegarder une réservation et la récupérer par salle ou employé.
 ### Étape 2 : Service

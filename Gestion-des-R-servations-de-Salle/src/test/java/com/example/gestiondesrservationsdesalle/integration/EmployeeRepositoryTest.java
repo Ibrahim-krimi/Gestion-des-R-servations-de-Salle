@@ -67,4 +67,15 @@ public class EmployeeRepositoryTest {
         Assertions.assertTrue(employee.isEmpty());
     }
 
+    @DisplayName("Junit Repo Test for Return Employee By Email")
+    @Test
+    public void thisTestShouldReturnEmployeeByEmail() {
+        // when
+        Employee saveEmployee =this.employeeRepository.save(this.employee);
+        Employee employeeByEmail = this.employeeRepository.findByEmail("test@gmail.com");
+        //
+        Assertions.assertNotNull(employeeByEmail);
+        Assertions.assertEquals(this.employee.getEmail(),employeeByEmail.getEmail());
+    }
+
 }
