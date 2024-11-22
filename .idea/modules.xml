@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Formation-exo.iml" filepath="$PROJECT_DIR$/.idea/Formation-exo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Gestion-des-R-servations-de-Salle/Gestion-des-R-servations-de-Salle.iml" filepath="$PROJECT_DIR$/Gestion-des-R-servations-de-Salle/Gestion-des-R-servations-de-Salle.iml" />
     </modules>
   </component>
 </project>

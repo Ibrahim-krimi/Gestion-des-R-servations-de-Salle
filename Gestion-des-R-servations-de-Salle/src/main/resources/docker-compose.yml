@@ -1,0 +1,16 @@
+services:
+  mysql-8-0-4:
+    image: mysql:8.0.4
+    container_name: mysql-8-0-4
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - 3306:3306
+  adminer:
+    image: adminer:4.8.0-standalone
+    container_name: adminer:4-8-0-standalone
+    restart: always
+    ports:
+      - 9080:8080
