@@ -2,6 +2,7 @@ package com.example.gestiondesrservationsdesalle.service;
 
 import com.example.gestiondesrservationsdesalle.Entity.Room;
 import com.example.gestiondesrservationsdesalle.Repository.RoomRepository;
+import com.example.gestiondesrservationsdesalle.Service.RoomService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,28 +40,27 @@ public class RoomServiceImplTest {
 
     @DisplayName("RoomSerice Test for saving room")
     @Test
-    public void WhenSaveRoomShouldReturnRoom(){
+    public void WhenSaveRoomShouldReturnRoom() {
         //Given
-        when(this.roomRepository.save(room)).thenReturn(room);
+
         //When
-        Room roomSaved = this.roomRepository.save(room);
+        Room roomSaved = this.roomService.save(room);
         //then
         Assertions.assertNotNull(roomSaved);
-        Assertions.assertEquals(room, roomSaved);
+        Assertions.assertEquals(room.getName(), roomSaved.getName());
     }
 
     @DisplayName("RoomSerice Test for Modifying room")
     @Test
     public void WhenUpdateRoomShouldReturnRoomUpdated(){
         //Given
-        when(this.roomRepository.save(room)).thenReturn(room);
         when(this.roomRepository.findById(any())).thenReturn(Optional.of(room));
         //When
         Room roomToUpdate = this.roomRepository.findById(1).orElse(null);
 
         roomToUpdate.setName("Bene Bene");
 
-        Room roomUpdated = this.roomRepository.save(roomToUpdate);
+        Room roomUpdated = this.roomService.update(roomToUpdate.getId(),roomToUpdate);
         //then
         Assertions.assertNotNull(roomUpdated);
         Assertions.assertEquals(roomToUpdate.getName(), roomUpdated.getName());

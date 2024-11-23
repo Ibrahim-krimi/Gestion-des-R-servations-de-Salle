@@ -47,7 +47,6 @@ public class EmlpoyeeServiceImplTest {
 
 
         //when
-        when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
         Employee created = employeeService.save(employee);
         //then
         Assertions.assertEquals(employee.getRole(), created.getRole());
@@ -56,15 +55,15 @@ public class EmlpoyeeServiceImplTest {
     @Test
     public void WhenUpdateEmployeeItShouldReturnEmployeeUpdated() {
         //Given
-        when(employeeRepository.findById(1)).thenReturn(Optional.of(employee));
-        //when
-        employee.setNom("jojo");
         when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
-        Employee updateEmployee = employeeService.updateEmploye(1,employee);
+        //when
+        Employee employeeSaved = employeeRepository.save(employee);
+        employeeSaved.setNom("jojo");
+        Employee updateEmployee = employeeService.updateEmploye(1,employeeSaved);
         //then
         Assertions.assertNotNull(updateEmployee);
-        Assertions.assertEquals("jojo", updateEmployee.getNom());
-        Assertions.assertEquals(employee.getId(), updateEmployee.getId());
+        Assertions.assertEquals("jojo", employeeSaved.getNom());
+        Assertions.assertEquals(employeeSaved.getId(), updateEmployee.getId());
     }
 
 

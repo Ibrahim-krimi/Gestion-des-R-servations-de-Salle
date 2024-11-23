@@ -14,7 +14,7 @@ public class ReservationServiceImplTest {
     ReservationRepository reservationRepository;
 
     @InjectMocks
-    ReservationServiceImpl reservationService;
+    ReservationRepository reservationService;
 
 
 }
