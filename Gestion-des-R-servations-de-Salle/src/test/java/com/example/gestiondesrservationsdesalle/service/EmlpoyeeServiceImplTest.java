@@ -4,34 +4,36 @@ package com.example.gestiondesrservationsdesalle.service;
 import com.example.gestiondesrservationsdesalle.Entity.Employee;
 import com.example.gestiondesrservationsdesalle.Enum.RoleEmployee;
 import com.example.gestiondesrservationsdesalle.Repository.EmployeeRepository;
+import com.example.gestiondesrservationsdesalle.Service.EmployeeService;
+import com.example.gestiondesrservationsdesalle.ServiceImpl.EmployeeServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class EmlpoyeeServiceImplTest {
 
     @Mock
     EmployeeRepository employeeRepository;
 
     @InjectMocks
-    EmployeeServiceImpl employeeService;
+    EmployeeService employeeService;
 
     Employee employee;
 
     @BeforeEach
     public void setUp() {
         //Given
-        Employee employee = Employee.builder()
+        employee = Employee.builder()
                 .id(1)
                 .nom("Ali")
                 .email("ali@gmail.com")
@@ -60,9 +62,8 @@ public class EmlpoyeeServiceImplTest {
         when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
         Employee updateEmployee = employeeService.updateEmploye(1,employee);
         //then
-
         Assertions.assertNotNull(updateEmployee);
-        Assertions.assertEquals("Jojo", updateEmployee.getNom());
+        Assertions.assertEquals("jojo", updateEmployee.getNom());
         Assertions.assertEquals(employee.getId(), updateEmployee.getId());
     }
 

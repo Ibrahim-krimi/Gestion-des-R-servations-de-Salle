@@ -18,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @DataJpaTest@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class ReservationRepositoryTest {
@@ -41,13 +42,13 @@ public class ReservationRepositoryTest {
                 .name("ROOM 43")
                 .description("Room 43  est en face de l'amphi 55")
                 .capacity(50).build();
-        this.roomRepository.save(room);
+        room =this.roomRepository.save(room);
 
         employee = Employee.builder()
                 .nom("Ibrahim")
                 .role(RoleEmployee.MANAGER)
                 .email("ibrahimKrimi2@gmail.com").build();
-        this.employeeRepository.save(employee);
+        employee = this.employeeRepository.save(employee);
 
 
         Calendar  calendar = Calendar.getInstance(); // Obtenir la date actuelle
@@ -86,6 +87,31 @@ public class ReservationRepositoryTest {
         Assertions.assertEquals(savedReservationSecondTime.getDescritption(), savedReservation.getDescritption());
     }
 
-   //test pour le cas ou y'as une deuxieme reservation sur les meme creneaux ou bien des creneaux qui intersecte
-   //Test dans le cas ou y'as une annulation d'une reservation
+    @DisplayName("Junit Repo Test for test find Reservation By room")
+    @Test
+    public void shouldFindReservationByRoom(){
+        //Given
+        reservationRepository.save(reservation);
+        //when
+        List<Reservation> reservationsByroom = this.reservationRepository.findByRoom(room);
+        //Then
+
+        reservationsByroom.forEach(reservation1 -> {
+            Assertions.assertEquals(reservation1.getRoom(), room);
+        });
+    }
+
+    @DisplayName("Junit Repo Test for test find Reservation By Employee")
+    @Test
+    public void shouldFindReservationByEmployee(){
+        //Given
+        reservationRepository.save(reservation);
+        //when
+        List<Reservation> reservationsByEmployee = this.reservationRepository.findByEmployee(employee);
+        //Then
+
+        reservationsByEmployee.forEach(reservation1 -> {
+            Assertions.assertEquals(reservation1.getEmployee(), employee);
+        });
+    }
 }
