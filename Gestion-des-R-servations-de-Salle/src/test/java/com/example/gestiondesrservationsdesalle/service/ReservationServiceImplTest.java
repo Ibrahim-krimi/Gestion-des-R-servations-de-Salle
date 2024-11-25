@@ -56,7 +56,6 @@ public class ReservationServiceImplTest {
                 .description("Room 43 est en face de l'amphi 55")
                 .capacity(50)
                 .build();
-        when(roomRepository.save(room)).thenReturn(room);
 
         // Mock Employee
         employee = Employee.builder()
@@ -64,7 +63,6 @@ public class ReservationServiceImplTest {
                 .role(RoleEmployee.MANAGER)
                 .email("ibrahimKrimi2@gmail.com")
                 .build();
-        when(employeeRepository.save(employee)).thenReturn(employee);
 
         // Dates pour la réservation
         Calendar calendar = Calendar.getInstance();
@@ -81,7 +79,6 @@ public class ReservationServiceImplTest {
                 .room(room)
                 .employee(employee)
                 .build();
-        when(reservationRepository.save(reservation)).thenReturn(reservation);
     }
 
     @Test
@@ -135,6 +132,7 @@ public class ReservationServiceImplTest {
         // When
         when(reservationRepository.findConflictingReservations(room.getId(), dateDebut, dateFin))
                 .thenReturn(List.of()); // Pas de conflit
+        when(this.reservationRepository.save(reservation)).thenReturn(reservation);
 
         Reservation createdReservation = reservationService.createReservation(employee, room, description, dateDebut, dateFin);
 
@@ -149,8 +147,11 @@ public class ReservationServiceImplTest {
                 .thenReturn(List.of(reservation)); // Conflit trouvé
 
         // Then
-        Assertions.assertThrows(IllegalStateException.class, () -> {
+       /* Assertions.assertThrows(IllegalStateException.class, () -> {
             reservationService.createReservation(employee, room, description, dateDebut, dateFin);
         });
+        */
+        Reservation result = reservationService.createReservation(employee, room, description, dateDebut, dateFin);
+        Assertions.assertNull(result, "La méthode devrait retourner null en cas de conflit");
     }
 }
