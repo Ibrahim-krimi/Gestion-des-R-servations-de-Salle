@@ -21,6 +21,14 @@ public class ReservationServiceImpl implements ReservationService {
     @Autowired
     RoomRepository roomRepository;
 
+     public Reservation getReservation(Integer id) {
+         return reservationRepository.findById(id).orElse(null);
+     }
+
+
+     public List<Reservation> getAllReservations() {
+        return reservationRepository.findAll();
+    }
 
     @Override
     public Boolean verifyAvailibility(Integer roomId, Date dateDebut, Date dateFin) {
