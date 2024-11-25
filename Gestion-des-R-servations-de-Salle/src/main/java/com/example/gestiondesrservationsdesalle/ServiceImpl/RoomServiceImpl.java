@@ -19,26 +19,31 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room findRoomById(int id) {
-        return null;
+        return this.roomRepository.findById(id).orElseThrow();
     }
 
     @Override
     public List<Room> findAllRooms() {
-        return List.of();
+        return this.roomRepository.findAll();
     }
 
     @Override
     public Room save(Room room) {
-        return null;
+        return this.roomRepository.save(room);
     }
 
     @Override
     public void delete(Room room) {
 
+        this.roomRepository.delete(room);
     }
 
     @Override
     public Room update(Integer id, Room room) {
-        return null;
+       Room roomToUpdate =this.roomRepository.findById(id).orElseThrow();
+       roomToUpdate.setName(room.getName());
+       roomToUpdate.setDescription(room.getDescription());
+       roomToUpdate.setCapacity(room.getCapacity());
+       return this.roomRepository.save(roomToUpdate);
     }
 }

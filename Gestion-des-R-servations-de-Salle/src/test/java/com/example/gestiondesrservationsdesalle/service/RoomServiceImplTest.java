@@ -2,7 +2,7 @@ package com.example.gestiondesrservationsdesalle.service;
 
 import com.example.gestiondesrservationsdesalle.Entity.Room;
 import com.example.gestiondesrservationsdesalle.Repository.RoomRepository;
-import com.example.gestiondesrservationsdesalle.Service.RoomService;
+import com.example.gestiondesrservationsdesalle.ServiceImpl.RoomServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +24,7 @@ public class RoomServiceImplTest {
     private RoomRepository roomRepository;
 
     @InjectMocks
-    private RoomService roomService;
+    private RoomServiceImpl roomService;
 
     Room room;
 
@@ -42,7 +42,7 @@ public class RoomServiceImplTest {
     @Test
     public void WhenSaveRoomShouldReturnRoom() {
         //Given
-
+        when(roomRepository.save(any(Room.class))).thenReturn(room);
         //When
         Room roomSaved = this.roomService.save(room);
         //then
@@ -50,20 +50,22 @@ public class RoomServiceImplTest {
         Assertions.assertEquals(room.getName(), roomSaved.getName());
     }
 
-    @DisplayName("RoomSerice Test for Modifying room")
+    @DisplayName("RoomService Test for Modifying room")
     @Test
-    public void WhenUpdateRoomShouldReturnRoomUpdated(){
-        //Given
+    public void WhenUpdateRoomShouldReturnRoomUpdated() {
+        // Given
         when(this.roomRepository.findById(any())).thenReturn(Optional.of(room));
-        //When
-        Room roomToUpdate = this.roomRepository.findById(1).orElse(null);
+        when(this.roomRepository.save(any(Room.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
+        // When
+        Room roomToUpdate = this.roomRepository.findById(1).orElseThrow(() -> new RuntimeException("Room not found"));
         roomToUpdate.setName("Bene Bene");
 
-        Room roomUpdated = this.roomService.update(roomToUpdate.getId(),roomToUpdate);
-        //then
-        Assertions.assertNotNull(roomUpdated);
-        Assertions.assertEquals(roomToUpdate.getName(), roomUpdated.getName());
+        Room roomUpdated = this.roomService.update(roomToUpdate.getId(), roomToUpdate);
+
+        // Then
+        Assertions.assertNotNull(roomUpdated, "Updated room should not be null");
+        Assertions.assertEquals("Bene Bene", roomUpdated.getName(), "Room name should be updated");
     }
 
 
