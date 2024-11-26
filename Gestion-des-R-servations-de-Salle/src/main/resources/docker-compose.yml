@@ -10,7 +10,10 @@ services:
       - 3306:3306
   adminer:
     image: adminer:4.8.0-standalone
-    container_name: adminer:4-8-0-standalone
+    container_name: adminer_4-8-0-standalone
     restart: always
     ports:
       - 9080:8080
+networks:
+  default:
+    driver: bridge
