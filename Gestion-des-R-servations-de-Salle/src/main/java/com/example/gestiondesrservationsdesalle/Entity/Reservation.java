@@ -15,7 +15,7 @@ import java.util.Date;
 @Entity
 public class Reservation {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String descritption;

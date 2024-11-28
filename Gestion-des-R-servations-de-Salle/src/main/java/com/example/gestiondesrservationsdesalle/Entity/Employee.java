@@ -1,10 +1,7 @@
 package com.example.gestiondesrservationsdesalle.Entity;
 
 import com.example.gestiondesrservationsdesalle.Enum.RoleEmployee;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,11 +14,12 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Employee {
 
-    @Id@GeneratedValue(strategy = GenerationType.AUTO)
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private  int id;
 
     private String nom;
 
+    @Enumerated(EnumType.STRING)
     private RoleEmployee role;
 
     private String email;
