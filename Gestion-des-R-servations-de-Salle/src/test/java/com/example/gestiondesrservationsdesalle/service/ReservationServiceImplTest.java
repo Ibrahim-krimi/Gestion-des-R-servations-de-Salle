@@ -1,9 +1,11 @@
 package com.example.gestiondesrservationsdesalle.service;
 
+import com.example.gestiondesrservationsdesalle.DTO.ReservationDTO;
 import com.example.gestiondesrservationsdesalle.Entity.Employee;
 import com.example.gestiondesrservationsdesalle.Entity.Reservation;
 import com.example.gestiondesrservationsdesalle.Entity.Room;
 import com.example.gestiondesrservationsdesalle.Enum.RoleEmployee;
+import com.example.gestiondesrservationsdesalle.Mapper.ReservationMapper;
 import com.example.gestiondesrservationsdesalle.Repository.EmployeeRepository;
 import com.example.gestiondesrservationsdesalle.Repository.ReservationRepository;
 import com.example.gestiondesrservationsdesalle.Repository.RoomRepository;
@@ -24,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,8 +41,12 @@ public class ReservationServiceImplTest {
     @Mock
     private RoomRepository roomRepository;
 
+    @Mock
+    private ReservationMapper reservationMapper;
+
     @InjectMocks
     private ReservationServiceImpl reservationService;
+
 
     private Reservation reservation;
     private Room room;
@@ -47,6 +54,7 @@ public class ReservationServiceImplTest {
     private final String description = "Reservation pour le cour de Cloud";
     private Date dateDebut;
     private Date dateFin;
+    private ReservationDTO reservationDTO;
 
     @BeforeEach
     public void setUp() {
@@ -78,6 +86,14 @@ public class ReservationServiceImplTest {
                 .date_Fin(dateFin)
                 .room(room)
                 .employee(employee)
+                .build();
+        reservationDTO = ReservationDTO.builder()
+                .id(1)
+                .descritption(description)
+                .date_Debut(dateDebut)
+                .date_Fin(dateFin)
+                .employee_id(employee.getId())
+                .room_id(room.getId())
                 .build();
     }
 
@@ -129,6 +145,43 @@ public class ReservationServiceImplTest {
 
     @Test
     public void shouldCreateReservationIfRoomIsAvailable() {
+        // Given
+        when(reservationRepository.findConflictingReservations(room.getId(), dateDebut, dateFin))
+                .thenReturn(List.of()); // Pas de conflit
+        when(employeeRepository.findById(employee.getId()))
+                .thenReturn(Optional.of(employee)); // Employee trouvé
+        when(roomRepository.findById(room.getId()))
+                .thenReturn(Optional.of(room)); // Room trouvée
+        when(reservationMapper.toEntity(reservationDTO, employee, room))
+                .thenReturn(reservation); // Mapper DTO -> Entity
+        when(reservationRepository.save(reservation))
+                .thenReturn(reservation); // Sauvegarde
+
+        // When
+        Reservation createdReservation = reservationService.createReservation(reservationDTO);
+
+        // Then
+        Assertions.assertNotNull(createdReservation);
+        Assertions.assertEquals(description, createdReservation.getDescritption());
+        Assertions.assertEquals(room, createdReservation.getRoom());
+        Assertions.assertEquals(employee, createdReservation.getEmployee());
+    }
+
+    @Test
+    public void shouldThrowExceptionIfRoomIsNotAvailableForReservation() {
+        // Given
+        when(reservationRepository.findConflictingReservations(room.getId(), dateDebut, dateFin))
+                .thenReturn(List.of(reservation)); // Conflit trouvé
+
+        // Then
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            reservationService.createReservation(reservationDTO);
+        });
+    }
+
+    /*
+    @Test
+    public void shouldCreateReservationIfRoomIsAvailable() {
         // When
         when(reservationRepository.findConflictingReservations(room.getId(), dateDebut, dateFin))
                 .thenReturn(List.of()); // Pas de conflit
@@ -147,11 +200,12 @@ public class ReservationServiceImplTest {
                 .thenReturn(List.of(reservation)); // Conflit trouvé
 
         // Then
-       /* Assertions.assertThrows(IllegalStateException.class, () -> {
-            reservationService.createReservation(employee, room, description, dateDebut, dateFin);
-        });
-        */
+       // Assertions.assertThrows(IllegalStateException.class, () -> {
+       //     reservationService.createReservation(employee, room, description, dateDebut, dateFin);
+       // });
+
         Reservation result = reservationService.createReservation(employee, room, description, dateDebut, dateFin);
         Assertions.assertNull(result, "La méthode devrait retourner null en cas de conflit");
     }
+    */
 }

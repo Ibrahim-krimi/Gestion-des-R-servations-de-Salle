@@ -1,5 +1,6 @@
 package com.example.gestiondesrservationsdesalle.Controller;
 
+import com.example.gestiondesrservationsdesalle.DTO.ReservationDTO;
 import com.example.gestiondesrservationsdesalle.Entity.Reservation;
 import com.example.gestiondesrservationsdesalle.Service.ReservationService;
 import com.example.gestiondesrservationsdesalle.ServiceImpl.ReservationServiceImpl;
@@ -29,11 +30,8 @@ public class ReservationRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
-        Reservation createdReservation = reservationService.createReservation(
-                reservation.getEmployee(), reservation.getRoom(),
-                reservation.getDescritption(), reservation.getDate_Debut(), reservation.getDate_Fin()
-        );
+    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationDTO reservation) {
+        Reservation createdReservation = reservationService.createReservation(reservation);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReservation);
     }
 }
